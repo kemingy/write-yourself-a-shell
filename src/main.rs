@@ -1,12 +1,13 @@
 use std::io::{self, Write};
 use std::process::Command;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 enum Error {
     NoBinary,
 }
 
 // A command consists of a binary and its arguments
+#[derive(Debug, PartialEq)]
 struct Cmd<'a> {
     binary: &'a str,
     args: Vec<&'a str>,
@@ -40,5 +41,40 @@ fn main() -> Result<(), io::Error> {
             }
             Err(Error::NoBinary) => {}
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_empty_line() {
+        assert_eq!(
+            Cmd::extract_from("").unwrap_err(),
+            Error::NoBinary,
+        );
+    }
+
+    #[test]
+    fn test_single_binary() {
+        assert_eq!(
+            Cmd::extract_from("echo").unwrap(),
+            Cmd {
+                binary: "echo",
+                args: vec![]
+            }
+        );
+    }
+
+    #[test]
+    fn test_binary_with_arguments() {
+        assert_eq!(
+            Cmd::extract_from("echo 1 2 3").unwrap(),
+            Cmd {
+                binary: "echo",
+                args: vec!["1", "2", "3"]
+            }
+        );
     }
 }
