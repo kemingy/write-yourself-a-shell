@@ -1,5 +1,7 @@
 #![feature(uniform_paths)]
+#![feature(try_from)]
 
+use std::convert::TryFrom;
 use std::io::{self, Write};
 use std::process::Command;
 
@@ -19,7 +21,7 @@ fn main() -> Result<(), io::Error> {
         stdout.flush()?;
         stdin.read_line(&mut line)?;
 
-        match Cmd::extract_from(&line) {
+        match Cmd::try_from(line.as_ref()) {
             Ok(cmd) => {
                 let output = Command::new(cmd.binary).args(cmd.args).output()?;
                 print!("{}", String::from_utf8_lossy(&output.stdout));
