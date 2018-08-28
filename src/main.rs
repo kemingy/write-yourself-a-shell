@@ -1,28 +1,13 @@
+#![feature(uniform_paths)]
+
 use std::io::{self, Write};
 use std::process::Command;
 
-#[derive(Debug, PartialEq)]
-enum Error {
-    NoBinary,
-}
+mod cmd;
+mod error;
 
-// A command consists of a binary and its arguments
-#[derive(Debug, PartialEq)]
-struct Cmd<'a> {
-    binary: &'a str,
-    args: Vec<&'a str>,
-}
-
-impl<'a> Cmd<'a> {
-    // Extract the command and its arguments from the commandline
-    fn extract_from(line: &'a str) -> Result<Self, Error> {
-        let mut parts = line.split_whitespace();
-        let binary = parts.nth(0).ok_or_else(|| Error::NoBinary)?;
-        let args = parts.collect();
-
-        Ok(Cmd { binary, args })
-    }
-}
+use cmd::Cmd;
+use error::Error;
 
 fn main() -> Result<(), io::Error> {
     let stdin = io::stdin();
@@ -41,40 +26,5 @@ fn main() -> Result<(), io::Error> {
             }
             Err(Error::NoBinary) => {}
         }
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_empty_line() {
-        assert_eq!(
-            Cmd::extract_from("").unwrap_err(),
-            Error::NoBinary,
-        );
-    }
-
-    #[test]
-    fn test_single_binary() {
-        assert_eq!(
-            Cmd::extract_from("echo").unwrap(),
-            Cmd {
-                binary: "echo",
-                args: vec![]
-            }
-        );
-    }
-
-    #[test]
-    fn test_binary_with_arguments() {
-        assert_eq!(
-            Cmd::extract_from("echo 1 2 3").unwrap(),
-            Cmd {
-                binary: "echo",
-                args: vec!["1", "2", "3"]
-            }
-        );
     }
 }
