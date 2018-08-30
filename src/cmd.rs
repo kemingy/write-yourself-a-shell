@@ -1,4 +1,5 @@
 use std::convert::TryFrom;
+use std::vec;
 
 use crate::error::{self, Error};
 
@@ -21,11 +22,40 @@ impl<'a> TryFrom<&'a str> for Cmd<'a> {
     }
 }
 
-type Cmds<'a> = Vec<Cmd<'a>>;
+#[derive(Debug, PartialEq)]
+pub struct Cmds<'a>(Vec<Cmd<'a>>);
 
-pub fn convert<'a>(line: &'a str) -> Result<Cmds<'a>, error::Error> {
-    let commands = line.split(';');
-    commands.map(|cmd| Cmd::try_from(cmd)).collect()
+// We cannot implement TryFrom for a type from the standard library (vec in
+// sthis case). Neither `Vec<T>` nor the `TryFrom` trait is defined by us.
+// See https://github.com/rust-lang/rust/issues/24745
+// A common pattern is to use a newtype instead and implement `TryFrom` for that
+// instead.
+// See https://doc.rust-lang.org/book/second-edition/ch19-04-advanced-types.html
+// See https://doc.rust-lang.org/rust-by-example/generics/new_types.html
+// See https://github.com/rust-unofficial/patterns/blob/master/patterns/newtype.md
+impl<'a> TryFrom<&'a str> for Cmds<'a> {
+    type Error = error::Error;
+
+    fn try_from(line: &'a str) -> Result<Self, Self::Error> {
+        let commands = line.split(';');
+        // `std::iter::FromIterator` is not implemented for our newtype. We could either implement it or
+        // specify what type we want to collect into and then wrap the result into an `Ok()`.
+        let v: Result<Vec<_>, _> = commands.map(|cmd| Cmd::try_from(cmd)).collect();
+        Ok(Cmds(v?))
+    }
+}
+
+// Since we defined a newtype for our `Cmds` (see above),
+// we also need to define all necessary traits for that.
+// In order to iterate over `Cmds`, we implement `IntoIterator`,
+// which is used when writing `for cmd in cmds`.
+impl<'a> IntoIterator for Cmds<'a> {
+    type Item = Cmd<'a>;
+    type IntoIter = vec::IntoIter<Cmd<'a>>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
 }
 
 #[cfg(test)]
@@ -62,8 +92,8 @@ mod test {
     #[test]
     fn test_multiple_commands() {
         assert_eq!(
-            convert("cat test.txt; echo hello").unwrap(),
-            vec![
+            Cmds::try_from("cat test.txt; echo hello").unwrap(),
+            Cmds(vec![
                 Cmd {
                     binary: "cat",
                     args: vec!["test.txt"]
@@ -72,7 +102,7 @@ mod test {
                     binary: "echo",
                     args: vec!["hello"]
                 }
-            ]
+            ])
         );
     }
 }
