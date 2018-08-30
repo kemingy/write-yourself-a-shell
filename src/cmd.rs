@@ -21,16 +21,20 @@ impl<'a> TryFrom<&'a str> for Cmd<'a> {
     }
 }
 
+type Cmds<'a> = Vec<Cmd<'a>>;
+
+pub fn convert<'a>(line: &'a str) -> Result<Cmds<'a>, error::Error> {
+    let commands = line.split(';');
+    commands.map(|cmd| Cmd::try_from(cmd)).collect()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
     fn test_empty_line() {
-        assert_eq!(
-            Cmd::try_from("").unwrap_err(),
-            Error::NoBinary,
-        );
+        assert_eq!(Cmd::try_from("").unwrap_err(), Error::NoBinary,);
     }
 
     #[test]
@@ -52,6 +56,23 @@ mod test {
                 binary: "echo",
                 args: vec!["1", "2", "3"]
             }
+        );
+    }
+
+    #[test]
+    fn test_multiple_commands() {
+        assert_eq!(
+            convert("cat test.txt; echo hello").unwrap(),
+            vec![
+                Cmd {
+                    binary: "cat",
+                    args: vec!["test.txt"]
+                },
+                Cmd {
+                    binary: "echo",
+                    args: vec!["hello"]
+                }
+            ]
         );
     }
 }
