@@ -1,14 +1,29 @@
 use std::io::{self, Write};
 use std::process::Command;
 
-// Extract the command and its arguments from the commandline
-fn get_command(line: String) -> (String, Vec<String>) {
-    let command: String = line.split_whitespace().take(1).collect();
-    let args: Vec<String> = line.split_whitespace().skip(1).map(String::from).collect();
-    (command, args)
+#[derive(Debug)]
+enum Error {
+    NoBinary,
 }
 
-fn main() -> io::Result<()> {
+// A command consists of a binary and its arguments
+struct Cmd<'a> {
+    binary: &'a str,
+    args: Vec<&'a str>,
+}
+
+impl<'a> Cmd<'a> {
+    // Extract the command and its arguments from the commandline
+    fn extract_from(line: &'a str) -> Result<Self, Error> {
+        let mut parts = line.split_whitespace();
+        let binary = parts.nth(0).ok_or_else(|| Error::NoBinary)?;
+        let args = parts.collect();
+
+        Ok(Cmd { binary, args })
+    }
+}
+
+fn main() -> Result<(), io::Error> {
     let stdin = io::stdin();
     let mut stdout = io::stdout();
 
@@ -17,8 +32,13 @@ fn main() -> io::Result<()> {
         print!("> ");
         stdout.flush()?;
         stdin.read_line(&mut line)?;
-        let (command, args) = get_command(line);
-        let output = Command::new(command).args(&args).output()?;
-        print!("{}", String::from_utf8_lossy(&output.stdout));
+
+        match Cmd::extract_from(&line) {
+            Ok(cmd) => {
+                let output = Command::new(cmd.binary).args(cmd.args).output()?;
+                print!("{}", String::from_utf8_lossy(&output.stdout));
+            }
+            Err(Error::NoBinary) => {}
+        }
     }
 }
