@@ -64,7 +64,10 @@ mod test {
 
     #[test]
     fn test_empty_line() {
-        assert_eq!(Cmd::try_from("").unwrap_err(), Error::NoBinary,);
+        match Cmd::try_from("") {
+            Err(Error::NoBinary) => assert!(true),
+            _ => assert!(false),
+        }
     }
 
     #[test]

@@ -11,7 +11,7 @@ mod error;
 use cmd::Cmds;
 use error::Error;
 
-fn main() -> Result<(), io::Error> {
+fn main() -> Result<(), Error> {
     let stdin = io::stdin();
     let mut stdout = io::stdout();
 
@@ -24,11 +24,14 @@ fn main() -> Result<(), io::Error> {
         match Cmds::try_from(line.as_ref()) {
             Ok(cmds) => {
                 for cmd in cmds {
-                    let output = Command::new(cmd.binary).args(cmd.args).output()?;
-                    print!("{}", String::from_utf8_lossy(&output.stdout));
+                    match Command::new(cmd.binary).args(cmd.args).output() {
+                        Ok(output) => print!("{}", String::from_utf8_lossy(&output.stdout)),
+                        Err(e) => eprintln!("rush: {:?}", e),
+                    }
                 }
             }
             Err(Error::NoBinary) => {}
+            Err(e) => eprintln!("rush: {:?}", e),
         }
     }
 }
