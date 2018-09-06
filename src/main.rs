@@ -5,6 +5,7 @@ use std::convert::TryFrom;
 use std::io::{self, Write};
 use std::process::Command;
 
+mod builtin;
 mod cmd;
 mod error;
 
@@ -24,9 +25,13 @@ fn main() -> Result<(), Error> {
         match Cmds::try_from(line.as_ref()) {
             Ok(cmds) => {
                 for cmd in cmds {
-                    match Command::new(cmd.binary).args(cmd.args).output() {
-                        Ok(output) => print!("{}", String::from_utf8_lossy(&output.stdout)),
-                        Err(e) => eprintln!("rush: {:?}", e),
+                    if cmd.binary == "exit" {
+                        builtin::exit(cmd.args);
+                    } else {
+                        match Command::new(cmd.binary).args(cmd.args).output() {
+                            Ok(output) => print!("{}", String::from_utf8_lossy(&output.stdout)),
+                            Err(e) => eprintln!("rush: {:?}", e),
+                        }
                     }
                 }
             }
