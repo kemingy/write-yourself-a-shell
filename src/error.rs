@@ -4,6 +4,7 @@ use std::io::Error as IoError;
 #[derive(Debug)]
 pub enum Error {
     NoBinary,
+    Spawn,
     Io(IoError),
 }
 
