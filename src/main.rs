@@ -20,8 +20,7 @@ fn main() -> Result<(), Error> {
             Ok(line) => {
                 rl.add_history_entry(line.as_str()).unwrap();
                 match handle(line) {
-                    Ok(()) => {}
-                    Err(Error::NoBinary) => {}
+                    Err(Error::NoBinary) | Ok(()) => {}
                     Err(e) => eprintln!("rush: {:?}", e),
                 }
             }
