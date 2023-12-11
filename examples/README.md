@@ -1,4 +1,4 @@
-# Solutions examples
+# Example Solutions
 
 This directory contains solutions for the exercises in the workshop.
 Please, read them only if you are stuck or want to compare your solution.
