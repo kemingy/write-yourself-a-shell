@@ -122,4 +122,4 @@ You might also want to [subscribe to our newsletter](https://corrode.dev/blog/) 
 future workshops and other Rust content.
 
 If you are looking for professional Rust training, please get in touch with us
-at (corrode.dev)[https://corrode.dev/].
+at [corrode.dev](https://corrode.dev/).
