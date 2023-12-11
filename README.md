@@ -1,4 +1,4 @@
-# Write Your Own Shell in Rust
+# Write Yourself A Shell in Rust
 
 ![Course banner](assets/banner.png)
 
