@@ -2,32 +2,30 @@
 
 ## Introduction
 
-One of things developers use every day is a shell. It comes in many flavors like bash, fish or zsh. Depending on your background, writing your own shell from scratch might either sound intimidating or pointless. We like to believe that it can be a fun way to gain more hands-on Rust experience.  If you want to play with concepts like I/O, error handling, and syscalls we invite you to participate in this workshop.  Who knows, it could also be an opportunity to start your first mid-size Rust project?  
+One of the things developers use every day is a [shell](https://multicians.org/shell.html). It comes in many flavors like bash, fish or zsh. Depending on your background, writing your own shell from scratch might either sound intimidating or pointless. We like to believe that it can be a fun way to gain more hands-on Rust experience. If you want to play with concepts like I/O, error handling, and syscalls we invite you to participate in this workshop. Who knows, it could also be an opportunity to start your first mid-size Rust project?
 
-This is a workshop about writing your own bash-like [shell](https://multicians.org/shell.html) in Rust. It will show you the basics, but it's by no means feature-complete.  
-
-A shell is a really big project. We can not cover everything.  
-Take it as an excuse to learn Rust rather than a guide to write the perfect shell.
+> [!NOTE]
+> Shells are very complex and we will implement only the basic functionalities.
+> Take this workshop as an excuse to learn Rust rather than a guide to write the perfect shell.
 
 ## Who's the target audience?
 
-This workshop is intended for *intermediate* Rust programmers that already understand basic Rust concepts and have some programming experience. We’ll explain the rest as we go along.
-When we were learning Rust and already knew the basic concepts, we always wanted to see a mid-size system being built to get an understanding for how the concepts are put into practice. We think this could be a learning boost for people that are in the same situation like we were.
+This workshop is intended for *intermediate* Rust programmers who already understand basic Rust concepts and have some programming experience. We’ll explain the rest as we go along.
+When we were learning Rust, we always wanted to see a mid-size system being built to get an understanding of how the concepts are put into practice. We think this could be a learning boost for people who are in the same situation as we were.
 
-[Santiago Pastorino](https://santiagopastorino.com) is the [WyeWorks](https://wyeworks.com) co-founder, Ruby on Rails core team alumni and Rust Developer. He is currently part of the Rust compiler NLL WG and [Rust Latam](https://rustlatam.org) organizer.
-[Matthias Endler](https://matthias-endler.de ) is a Backend Engineer at trivago and runs [Hello Rust Show](https://hello-rust.show).
+* [Santiago Pastorino](https://santiagopastorino.com) is the [WyeWorks](https://wyeworks.com) co-founder, Ruby on Rails core team alumni and Rust Developer. He is currently part of the Rust compiler NLL WG and [Rust Latam](https://rustlatam.org) organizer.
+* [Matthias Endler](https://matthias-endler.de) is a Backend Engineer at trivago and runs [Hello Rust Show](https://hello-rust.show).
 
 
-### Necessary tools 
-    
-* [rustc](https://rustup.rs/)
-* [cargo](https://github.com/rust-lang/cargo)
+### Necessary tools
+
+* [rust](https://www.rust-lang.org/tools/install)
 * [git](https://git-scm.com/)
 
-##  Structure
+## Structure
 
 Every commit adds one new feature or refactors the code in a significant way.
-You can `git checkout <commit_id>` to see how the code looks like after each step.
+You can `git checkout <commit_id>` to see what the code looks like after each step.
 
 You can always check your implementation by running `./validate`.
 
@@ -40,23 +38,23 @@ You can always check your implementation by running `./validate`.
 3. Shell-builtins (cd)
 4. Pipes
 5. Ideas for extending your shell
-  - readline
-  - handling control signals (ctrl+c, ctrl+d)  
-  - redirection
-  - command completion
-  - adding more builtins
-  - use a grammar for parsing
-  - Hints for the workshop
+   - readline
+   - handling control signals (ctrl+c, ctrl+d)
+   - redirection
+   - command completion
+   - adding more builtins
+   - use a grammar for parsing
+   - Hints for the workshop
 
 ### Section 0 - Check Rust installation and version
 
-- rustc -v
-- try running Rust Edition 2018 preview
+Run `rustc --version`.
+You should see something like `rustc 1.74.0 (79e9716c9 2023-11-13)`.
 
 ### Block 1 - Running single commands
 
 - Try to run a single command and print the output to the stdout.
-- Hint: Look for APIs in the standard library to do that.
+- Hint: Use [Command](https://doc.rust-lang.org/std/process/struct.Command.html) from the standard library.
 - Bonus: Try to make the code as idiomatic as you can.
 - Bonus: Write a unit test to make sure your shell works
 
@@ -76,7 +74,7 @@ You can always check your implementation by running `./validate`.
 ### Block 4 - Pipes
 
 - Implement pipes, which are a way to feed the output of one command into another one.
-	Syntax: 
+	Syntax:
 
 	```shell
 	command1 | command2
@@ -87,7 +85,7 @@ You can always check your implementation by running `./validate`.
 ### Block 5 - Bring your own features (e.g. "where the fun is at")!
 
 * Add readline support
-* Handle control signals (ctrl+c, ctrl+d)  
+* Handle control signals (ctrl+c, ctrl+d)
 * Redirection
 * Command completion
 * Implement more shell-builtins
