@@ -44,25 +44,25 @@ You can always check your implementation by running `./validate`.
    - use a grammar for parsing
    - Hints for the workshop
 
-### Block 0 - Check Rust Installation and Version
+## Block 0 - Check Rust Installation and Version
 
 Run `rustc --version`.
 You should see something like `rustc 1.74.0 (79e9716c9 2023-11-13)`.
 
-### Block 1 - Running Single Commands
+## Block 1 - Running Single Commands
 
 - Try to run a single command and print the output to the stdout.
 - Hint: Use [Command](https://doc.rust-lang.org/std/process/struct.Command.html) from the standard library.
 - Bonus: Try to make the code as idiomatic as you can.
 - Bonus: Write a unit test to make sure your shell works.
 
-### Block 2 - Concatenating Commands
+## Block 2 - Concatenating Commands
 
 - Try to run two commands in sequence and print all output in sequence
   to `stdout`.
 - Bonus: Write an [integration test](https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html).
 
-### Block 3 - Builtins
+## Block 3 - Builtins
 
 Builtins are commands, that are implemented inside the shell itself (so, literally "built in").
 They serve common needs that most users will have, like printing things with `echo`.
@@ -72,12 +72,12 @@ They serve common needs that most users will have, like printing things with `ec
   `for`,...).
 - Bonus: Think about why `cd` must be a builtin.
 
-### Block 4 - Shell History
+## Block 4 - Shell History
 
 - Add support for the `history` command, which lists all previously executed commands.
 - Bonus: Think of other ways to store the history (e.g. in a database).
 
-### Block 5 - Pipes
+## Block 5 - Pipes
 
 - Implement pipes, which are a way to feed the output of one command into another one.
 	Syntax:
@@ -88,7 +88,7 @@ They serve common needs that most users will have, like printing things with `ec
 
 - Bonus: Think about ways to make command representation more idiomatic.
 
-### Block 6 - Bring your own features (e.g. "where the fun is at")!
+## Block 6 - Bring your own features (e.g. "where the fun is at")!
 
 * Add readline support
 * Handle control signals (ctrl+c, ctrl+d)
@@ -97,3 +97,29 @@ They serve common needs that most users will have, like printing things with `ec
 * Implement more shell-builtins
 * Use a grammar for parsing
 * Add more tests
+
+## Show And Tell!
+
+We are curious to see what you have built. If you want to share your shell with
+us, please send us a link to your repository. We will add it to the list below.
+
+We'd be happy to hear your answers to the following questions:
+
+- What did you learn?
+- What was easy?
+- What was hard?
+- Would you do anything differently?
+- What would you like to learn next?
+
+## Closing Words
+
+If you enjoyed this workshop, please share it with your friends and colleagues.
+It would greatly help us if you could tweet/toot about it or share it on
+[Reddit](https://www.reddit.com/r/rust/) or [LinkedIn](https://www.linkedin.com/).
+Thanks!
+
+You might also want to [subscribe to our newsletter](https://corrode.dev/blog/) for
+future workshops and other Rust content.
+
+If you are looking for professional Rust training, please get in touch with us
+at (corrode.dev)[https://corrode.dev/].
