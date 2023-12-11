@@ -22,11 +22,11 @@ When we were learning Rust, we always wanted to see a mid-size system being buil
 
 ## Structure
 
-Every commit adds one new feature or refactors the code in a significant way.
-You can `git checkout <commit_id>` to see what the code looks like after each step.
+Use `src/main.rs` to start writing your code.
+If you get stuck, check out the [examples](/examples) folder, which contains working source code for each block.
+We recommend to try it yourself first and only refer to the example code in case you run into issues.
 
 You can always check your implementation by running `./validate`.
-
 (Validate script was adapted from the majestic [build-your-own-shell](https://github.com/tokenrove/build-your-own-shell) by Julian Squires.)
 
 ## Features We Cover
