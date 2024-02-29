@@ -5,15 +5,17 @@ use std::{
     process::Command,
 };
 
+// This struct doesn't use lifetimes to keep the code simple.
+// You can try to use `&str` instead of `String` to avoid unnecessary allocations. 👍
 #[derive(PartialEq, Debug)]
-struct Cmd<'a> {
-    binary: &'a str,
-    args: Vec<&'a str>,
+struct Cmd {
+    binary: String,
+    args: Vec<String>,
 }
 
-impl<'a> Cmd<'a> {
-    fn from_line(line: &'a str) -> Option<Self> {
-        let mut parts = line.split_whitespace();
+impl Cmd {
+    fn from_line(line: &str) -> Option<Self> {
+        let mut parts = line.split_whitespace().map(String::from);
         parts.next().map(|binary| Cmd {
             binary,
             args: parts.collect(),
@@ -74,7 +76,7 @@ mod tests {
         assert_eq!(
             Cmd::from_line("ls"),
             Some(Cmd {
-                binary: "ls",
+                binary: "ls".to_string(),
                 args: vec![]
             })
         );
@@ -85,8 +87,8 @@ mod tests {
         assert_eq!(
             Cmd::from_line("ls -l"),
             Some(Cmd {
-                binary: "ls",
-                args: vec!["-l"]
+                binary: "ls".to_string(),
+                args: vec!["-l".to_string()]
             })
         );
     }
