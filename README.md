@@ -22,6 +22,8 @@ When we were learning Rust, we always wanted to see a mid-size system being buil
 
 ## Structure
 
+Use the [slides](./slides.pdf) to go through the exercises.
+
 Use `src/main.rs` to start writing your code.
 If you get stuck, check out the [examples](/examples) folder, which contains working source code for each block.
 We recommend to try it yourself first and only refer to the example code in case you run into issues.
