@@ -144,8 +144,8 @@ fn main() {
         show_prompt();
         let line = read_line();
         let chains = chains_from_line(line);
-        for s in chains {
-            s.run();
+        for chain in chains {
+            chain.run();
         }
     }
 }
